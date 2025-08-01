@@ -1,1 +1,33 @@
-hi this file the
+pipeline {
+  agent { label 'jenkins-agent' }
+  tools {
+      jdk 'java17'
+    maven 'maven3'
+}
+
+stages{
+    stage("cleanup workspace"){
+        steps {
+      cleanWs()
+     }
+}
+
+stage("checkout from SCM"){
+        steps {
+            git branch:'main', credentialsId: 'github', url: 'https://github.com/siranjeevi-jeevi/siranjeevi-project.git'
+           }
+     } 
+
+stage("build application"){
+        steps {
+SH "MVN clean package"
+   }
+}
+
+stage("test application"){
+        steps {
+SH "MVN test"
+        }
+     }
+  }
+}
